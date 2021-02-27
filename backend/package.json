@@ -2,7 +2,7 @@
   "name": "websocket-demo-backend",
   "version": "0.0.0",
   "scripts": {
-    "server": "node index.js"
+    "start": "node index.js"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "eslint": "^4.17.0",
-    "eslint-config-airbnb": "^16.1.0"
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-node": "^11.1.0"
   }
 }
