@@ -1,0 +1,14 @@
+{
+  "env": {
+    "node": true,
+    "browser": false
+  },
+  "globals": {
+    "exampleGlobalVariable": true
+  },
+  "rules": {
+    "eqeqeq": 1
+  },
+  "plugins": [
+  ]
+}
