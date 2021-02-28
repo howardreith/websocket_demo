@@ -4,11 +4,12 @@ export async function signInWithUsername(username) {
   const result = await fetch(`${backendUrl}/signin`, {
     method: 'post',
     headers: {
-      'Content-type': 'application/JSON',
-      body: JSON.stringify({
-        username,
-      }),
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     },
+    body: JSON.stringify({
+      username,
+    }),
   });
   return result.json();
 }
