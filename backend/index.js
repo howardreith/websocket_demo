@@ -4,6 +4,7 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const authRoutes = require('./routes/auth');
+const messageRoutes = require('./routes/message');
 
 const redis = require('redis');
 
@@ -33,6 +34,7 @@ http.listen(port, function() {
 });
 
 authRoutes.signin(app, client);
+messageRoutes.sendMessage(app, client);
 
 io.on('connection', function(socket) {
 

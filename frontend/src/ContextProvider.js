@@ -6,10 +6,14 @@ export const AppContext = React.createContext(null, null);
 export function buildState(_this) {
   return {
     token: null,
-    userProfile: null,
+    username: null,
 
     setToken: (token, cb) => {
       _this.setState((state) => ({ ...state, token }), cb);
+    },
+
+    setUsername: (username, cb) => {
+      _this.setState((state) => ({ ...state, username }), cb);
     },
   };
 }

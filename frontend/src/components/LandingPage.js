@@ -14,16 +14,16 @@ class LandingPage extends Component {
 
   async handleSubmitUsername(username) {
     const { appContext } = this.props;
-    const response = await signInWithUsername(username);
-    appContext.setToken(response.token);
+    await signInWithUsername(username);
+    appContext.setUsername(username);
   }
 
   render() {
     const { appContext } = this.props;
     return (
       <>
-        {!appContext.token && (<SignupPage onHandleSubmitUsername={this.handleSubmitUsername} />)}
-        {appContext.token && (
+        {!appContext.username && (<SignupPage onHandleSubmitUsername={this.handleSubmitUsername} />)}
+        {appContext.username && (
         <>
           <ChatRoom />
         </>
