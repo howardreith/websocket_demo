@@ -21,7 +21,7 @@ export class ChatRoomWithoutContext extends Component {
 
   async componentDidMount() {
     const initialMessages = await getLast20Messages();
-    this.setState({ messages: initialMessages.messages });
+    this.setState({ messages: initialMessages.messages.reverse() });
 
     socket.on('receiveMessage', (data) => {
       const { username, message } = data;
