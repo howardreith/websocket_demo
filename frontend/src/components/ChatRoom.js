@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { io } from 'socket.io-client';
-import { sendMessage } from './backend';
+import { getLast20Messages } from './backend';
 import withAppContext from '../withAppContext';
 import { AppContextPropType } from '../helpers/PropTypeConstants';
 
@@ -19,7 +19,10 @@ export class ChatRoomWithoutContext extends Component {
     this.state = { messageText: '', messages: [] };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    const initialMessages = await getLast20Messages();
+    this.setState({ messages: initialMessages.messages });
+
     socket.on('receiveMessage', (data) => {
       const { username, message } = data;
       const { messages } = this.state;
@@ -38,7 +41,6 @@ export class ChatRoomWithoutContext extends Component {
     const { messageText } = this.state;
     const { appContext } = this.props;
     const data = { username: appContext.username, message: messageText };
-    await sendMessage(data);
     socket.emit('message', data);
   }
 

@@ -1,9 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const redis = require('redis');
-const UUID = require('uuid');
 const authRoutes = require('./routes/auth');
+const messageRoutes = require('./routes/message');
+const messageRepo = require('./repository/message');
 
 const port = process.env.PORT || 8080;
 const app = express();
@@ -17,11 +17,6 @@ app.use(cors(corsOptions));
 app.use(express.static('public'));
 app.use(bodyParser.json());
 
-const client = redis.createClient();
-client.configs = {
-  port: '6379'
-};
-
 const io = require('socket.io')(httpServer, {
   origin: "http://localhost:3000",
   methods: ['GET', 'POST'],
@@ -30,18 +25,17 @@ const io = require('socket.io')(httpServer, {
   }
 });
 
-authRoutes.signin(app, client);
+authRoutes.signin(app);
+messageRoutes.getLast20Messages(app);
 
 io.on('connection', function (socket) {
   socket.on('message', function (data) {
     const { message, username } = data;
-    const messageUuid = UUID.v4();
     const messageInfo = {
       messageSender: username,
       message
     };
-    console.log('====> messageUuid', messageUuid)
-    client.hmset(messageUuid, messageInfo, redis.print);
+    messageRepo.addMessageToDb(messageInfo);
     io.sockets.emit('receiveMessage', data);
   });
 });

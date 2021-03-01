@@ -4,6 +4,9 @@
     "browser": false,
     "es6": true
   },
+  "parserOptions": {
+    "ecmaVersion": 8
+  },
   "globals": {
     "exampleGlobalVariable": true
   },

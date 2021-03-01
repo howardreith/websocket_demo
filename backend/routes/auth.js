@@ -1,10 +1,10 @@
-const redis = require('redis');
+const authRepo = require('../repository/auth');
 
 module.exports = {
-  signin: function (app, client) {
+  signin: function (app) {
     app.post('/signin', (req, res) => {
       const username = req.body.username;
-      client.set(username, true, redis.print);
+      authRepo.signInUser(username);
       res.send({
         'status': 'OK'
       });

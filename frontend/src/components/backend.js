@@ -11,19 +11,12 @@ export async function signInWithUsername(username) {
       username,
     }),
   });
-  return result.json();
+  return result.json().messages;
 }
 
-export async function sendMessage({ username, message }) {
-  await fetch(`${backendUrl}/sendMessage`, {
-    method: 'post',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      message,
-      username,
-    }),
+export async function getLast20Messages() {
+  const result = await fetch(`${backendUrl}/last20messages`, {
+    method: 'get',
   });
+  return result.json();
 }
