@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -9,8 +10,9 @@ const port = process.env.PORT || 8080;
 const app = express();
 const httpServer = require('http').createServer(app);
 
+const frontEndUrl = process.env.FRONT_END_URL;
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: frontEndUrl,
   optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
@@ -18,10 +20,10 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 
 const io = require('socket.io')(httpServer, {
-  origin: "http://localhost:3000",
+  origin: frontEndUrl,
   methods: ['GET', 'POST'],
   cors: {
-    origin: 'http://localhost:3000',
+    origin: frontEndUrl,
   }
 });
 

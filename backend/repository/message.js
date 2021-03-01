@@ -1,10 +1,8 @@
 const redis = require('redis');
 const UUID = require('uuid');
 const { promisify } = require("util");
-const client = redis.createClient();
-client.configs = {
-  port: '6379'
-};
+const client = redis.createClient(process.env.REDIS_URL);
+
 const lrangeAsync = promisify(client.lrange).bind(client);
 const getAsync = promisify(client.get).bind(client);
 const hmgetAsync = promisify(client.hmget).bind(client);

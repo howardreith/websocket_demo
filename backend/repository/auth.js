@@ -1,8 +1,5 @@
 const redis = require('redis');
-const client = redis.createClient();
-client.configs = {
-  port: '6379'
-};
+const client = redis.createClient(process.env.REDIS_URL);
 
 function signInUser(username) {
   client.set(username, true, redis.print);

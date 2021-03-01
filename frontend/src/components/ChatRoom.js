@@ -6,9 +6,6 @@ import { getLast50Messages } from './backend';
 import withAppContext from '../withAppContext';
 import { AppContextPropType } from '../helpers/PropTypeConstants';
 
-// const SOCKET_IO_URL = 'http://localhost:3000';
-// TODO will need to set an environment variable here perhaps
-// https://socket.io/docs/v3/client-initialization/
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 const socket = io(backendUrl);
 
