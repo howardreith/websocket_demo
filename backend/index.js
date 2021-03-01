@@ -1,50 +1,53 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const app = express();
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
-const authRoutes = require('./routes/auth');
-const messageRoutes = require('./routes/message');
-
+const cors = require('cors');
 const redis = require('redis');
+const UUID = require('uuid');
+const authRoutes = require('./routes/auth');
 
 const port = process.env.PORT || 8080;
-const cors = require('cors');
+const app = express();
+const httpServer = require('http').createServer(app);
 
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
 app.use(express.static('public'));
 app.use(bodyParser.json());
 
-const corsOptions = {
-    origin: 'http://localhost:3000',
-    optionsSuccessStatus: 200
-};
-app.use(cors(corsOptions));
-
 const client = redis.createClient();
-client.on("error", function(error) {
-    console.error(error);
-});
 client.configs = {
-    port: '6379'
+  port: '6379'
 };
 
-// Start the Server
-http.listen(port, function() {
-    console.info('Server Started. Listening on *:' + port);
+const io = require('socket.io')(httpServer, {
+  origin: "http://localhost:3000",
+  methods: ['GET', 'POST'],
+  cors: {
+    origin: 'http://localhost:3000',
+  }
 });
 
 authRoutes.signin(app, client);
-messageRoutes.sendMessage(app, client);
 
-io.on('connection', function(socket) {
-
-    // Fire 'send' event for updating Message list in UI
-    socket.on('message', function(data) {
-        io.emit('send', data);
-    });
-
-    // Fire 'count_chatters' for updating Chatter Count in UI
-    socket.on('update_chatter_count', function(data) {
-        io.emit('count_chatters', data);
-    });
+io.on('connection', function (socket) {
+  socket.on('message', function (data) {
+    const { message, username } = data;
+    const messageUuid = UUID.v4();
+    const messageInfo = {
+      messageSender: username,
+      message
+    };
+    console.log('====> messageUuid', messageUuid)
+    client.hmset(messageUuid, messageInfo, redis.print);
+    io.sockets.emit('receiveMessage', data);
+  });
 });
+
+// Start the Server
+httpServer.listen(port, function () {
+  console.info('Server Started. Listening on *:' + port);
+});
+
