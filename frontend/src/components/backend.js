@@ -14,8 +14,8 @@ export async function signInWithUsername(username) {
   return result.json().messages;
 }
 
-export async function getLast20Messages() {
-  const result = await fetch(`${backendUrl}/last20messages`, {
+export async function getLast50Messages() {
+  const result = await fetch(`${backendUrl}/last50messages`, {
     method: 'get',
   });
   return result.json();

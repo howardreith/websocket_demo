@@ -26,7 +26,7 @@ const io = require('socket.io')(httpServer, {
 });
 
 authRoutes.signin(app);
-messageRoutes.getLast20Messages(app);
+messageRoutes.getLast50Messages(app);
 
 io.on('connection', function (socket) {
   socket.on('message', function (data) {

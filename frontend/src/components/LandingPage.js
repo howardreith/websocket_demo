@@ -22,13 +22,8 @@ class LandingPage extends Component {
     const { appContext } = this.props;
     return (
       <>
-        {!appContext.username && (<SignupPage onHandleSubmitUsername={this.handleSubmitUsername} />)}
-        {appContext.username && (
-        <>
-          <ChatRoom />
-        </>
-        )}
-
+        {!appContext.username && <SignupPage onHandleSubmitUsername={this.handleSubmitUsername} />}
+        {appContext.username && <ChatRoom />}
       </>
 
     );
